@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Data
+import java.util.List;
+
 @NoArgsConstructor
 @Entity
 @Table(name = "students")
 @Getter
 @Setter
+@Data
 public class Student {
 
     @Id
@@ -28,11 +30,19 @@ public class Student {
     private String dateOfBirth;
 
     @Column
-    private String courseTitle;
-
-    @Column
-    private String startDateForCourse;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "student_courses",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courses;
 
     @Column
     private double averageGrade;
+
+    public Student (int id) {
+        this.id = id;
+    }
 }
+

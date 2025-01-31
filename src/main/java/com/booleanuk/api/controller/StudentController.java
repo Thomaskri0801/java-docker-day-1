@@ -1,6 +1,8 @@
 package com.booleanuk.api.controller;
 
+import com.booleanuk.api.model.Course;
 import com.booleanuk.api.model.Student;
+import com.booleanuk.api.repository.CourseRepository;
 import com.booleanuk.api.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("students")
@@ -16,6 +21,9 @@ public class StudentController {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     @PostMapping
     public ResponseEntity<Student> createStudent(@RequestBody Student student) {
@@ -44,8 +52,6 @@ public class StudentController {
         updateStudent.setFirstName(student.getFirstName());
         updateStudent.setLastName(student.getLastName());
         updateStudent.setDateOfBirth(student.getDateOfBirth());
-        updateStudent.setCourseTitle(student.getCourseTitle());
-        updateStudent.setStartDateForCourse(student.getStartDateForCourse());
         updateStudent.setAverageGrade(student.getAverageGrade());
 
         return new ResponseEntity<>(this.studentRepository.save(updateStudent), HttpStatus.CREATED);
